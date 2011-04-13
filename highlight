@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+#
+# INSTALL
+#
+# $ mkdir ~/bin/
+# $ cp THIS FILE ~/bin/highlight
+# $ chmod +x ~/bin/highlight
+#
+# USAGE
+# $ cat sample.txt | highlight hoge
+
+begin
+  regexp = Regexp.new(ARGV.shift)
+
+  STDIN.each_line do |line|
+    puts line.gsub(regexp){|text| "\e[30m\e[43m#{text}\e[0m" }
+  end
+rescue => e
+  puts <<-USAGE
+Error: #{e.message}
+
+Usage:
+  $ cat sample.txt | highlight REGEXP
+
+Sample:
+  $ cat sample.txt | highlight hoge
+  USAGE
+
+  exit(1)
+end

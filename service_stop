@@ -1,0 +1,48 @@
+#!/usr/bin/perl
+
+# CentOS 5
+
+use strict;
+use warnings;
+
+# 自動起動を止めるサービス一覧
+my @service = qw(
+  apmd
+  atd  
+  auditd
+  autofs
+  avahi-daemon
+  bluetooth
+  cups
+  firstboot
+  gpm
+  hidd
+  ip6tables
+  kudzu
+  mcstrans
+  netfs
+  nfslock
+  pcscd
+  portmap
+  restorecond
+  rpcgssd
+  rpcidmapd
+xfs
+xinetd
+yum-updatesd
+);
+
+# コマンド
+my $chkconfig = "/sbin/chkconfig";
+
+# サービス停止、自動起動停止
+foreach (@service) {
+  chomp;
+  system "/etc/init.d/$_ stop";
+  system "$chkconfig $_ off";
+}
+
+# 自動起動の確認
+foreach (@service) {
+  system "$chkconfig --list $_";
+}
